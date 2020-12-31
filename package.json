@@ -1,0 +1,34 @@
+{
+  "name": "plutonus-host",
+  "version": "0.0.1",
+  "description": "A beautiful image host and url shortener.",
+  "main": "src/app.js",
+  "dependencies": {},
+  "devDependencies": {
+    "eslint": "^7.16.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-plugin-import": "^2.22.1"
+  },
+  "scripts": {
+    "start": "node src/app.js",
+    "dev": "nodemon src/app.js",
+    "test": "yarn run lint",
+    "lint": "eslint src"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PlutonusDev/Plutonus-Host.git"
+  },
+  "keywords": [
+    "Node",
+    "Express",
+    "ImageHost",
+    "FileServer"
+  ],
+  "author": "PlutonusDev <ceo@plutonus.co>",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/PlutonusDev/Plutonus-Host/issues"
+  },
+  "homepage": "https://github.com/PlutonusDev/Plutonus-Host#readme"
+}
