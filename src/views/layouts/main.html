@@ -13,9 +13,17 @@
 	<meta name="description" content="">
 	<meta name="theme-color" content="#">
 
-	<link rel="stylesheet" href="/assets/css/normalize.css">
+	<link rel="stylesheet" href="/assets/vendor/normalize/normalize.css">
+	<link rel="stylesheet" href="/assets/vendor/bootstrap/css/bootstrap.min.css">
+	<link rel="stylesheet" href="/assets/vendor/mdb/css/mdb.min.css">
+
+	<script src="/assets/vendor/bootstrap/js/bootstrap.min.js"></script>
+	<script src="/assets/vendor/mdb/js/mdb.min.js"></script>
+	<script src="https://kit.fontawesome.com/8a74f44ba2.js" crossorigin="anonymous"></script>
 </head>
-<body>
+<body class="bg-dark text-light min-vh-100">
+	{{>navigation}}
+
 	{{{body}}}
 
 	<!-- Not Required Yet - <script src="/assets/vendor/modernizr/modernizr.min.js"></script> -->
