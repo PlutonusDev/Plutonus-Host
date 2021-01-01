@@ -11,6 +11,10 @@ const database = require("./util/database");
 
 const app = express();
 
+const db = new database({
+	dir: process.env.DB_URL
+});
+
 app.engine("html", exphbs({
 	extname: ".html",
 	defaultLayout: "main",
@@ -28,13 +32,13 @@ app.use(session({
 }));
 app.set("x-powered-by", false);
 
-const routers = require("./routes")(new database());
+const routers = require("./routes")(db);
 app.use("*", routers.logger);
 app.use("/api", routers.api);
 app.use("/", routers.master);
 
 require("./util/configCheck").then(() => {
 	app.listen(process.env.PORT || 3000, () => {
-		log(`Services are now online on port :${process.env.port || 3000}`);
+		log(`Services are now online on port :${process.env.port || 3000}.`);
 	});
 });
