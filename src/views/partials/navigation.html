@@ -1,0 +1,20 @@
+<nav class="navbar navbar-expand-md navbar-dark bg-dark sticky-top">
+	<div class="container-fluid">
+		<a class="navbar-brand text-primary font-weight-bold" href="/">
+			Plutonus! Host
+		</a>
+		<button class="navbar-toggler" type="button" data-mdb-toggle="collapse" data-mdb-target="#navbar">
+			<i class="fas fa-bars"></i>
+		</button>
+
+		<div class="collapse navbar-collapse" id="navbar">
+			<ul class="navbar-nav mr-auto mb-2 mb-lg-0">
+				{{#each navlinks}}
+					<li class="nav-item">
+						<a class="nav-link {{this.active}}" href="{{this.href}}">{{this.page}}</a>
+					</li>
+				{{/each}}
+			</ul>
+		</div>
+	</div>
+</nav>
