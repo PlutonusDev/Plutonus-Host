@@ -6,10 +6,10 @@ const app = express.Router();
 
 function formatLinks(req, res, next) {
 	res.locals.links = {};
-	for(let i in navlinks) {
-		if(!navlinks[i].authOnly && !navlinks[i].noAuthOnly) res.locals.links[i] = navlinks[i];
-		if(req.session.username && navlinks[i].authOnly) res.locals.links[i] = navlinks[i];
-		if(!req.session.username && navlinks[i].noAuthOnly) res.locals.links[i] = navlinks[i];
+	for (const data of Object.values(navlinks)) {
+		if (!data.authOnly && !data.noAuthOnly) res.locals.links[i] = navlinks[i];
+		if (req.session.username && data.authOnly) res.locals.links[i] = navlinks[i];
+		if (!req.session.username && data.noAuthOnly) res.locals.links[i] = navlinks[i];
 	}
 
 	next();

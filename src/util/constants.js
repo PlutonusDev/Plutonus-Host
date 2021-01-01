@@ -6,28 +6,28 @@ module.exports = {
 			username: String,
 			password: String,
 			id: Number,
-			token: String
+			token: String,
 		}),
 		File: new Schema({
 			owner: Number,
-			location: String
-		})
+			location: String,
+		}),
 	},
 
 	navlinks: {
 		home: {
 			href: "/",
-			page: "Home"
+			page: "Home",
 		},
 		login: {
 			href: "/login",
 			page: "Login",
-			noAuthOnly: true
+			noAuthOnly: true,
 		},
 		logout: {
 			href: "/logout",
 			page: "Logout",
-			authOnly: true
-		}
-	}
-}
+			authOnly: true,
+		},
+	},
+};

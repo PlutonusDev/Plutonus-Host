@@ -24,7 +24,7 @@
     "start": "node src/app.js",
     "dev": "nodemon src/app.js",
     "test": "yarn run lint",
-    "lint": "eslint src"
+    "lint": "eslint ./src/**/*.js"
   },
   "repository": {
     "type": "git",

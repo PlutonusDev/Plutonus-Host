@@ -1,23 +1,26 @@
+const mongoose = require("mongoose");
+const logger = require("./logger");
+
 module.exports = class Connection {
 	constructor(config) {
-		this.Mongoose = require("mongoose");
-		this.logger = require("./logger");
+		this.Mongoose = mongoose;
+		this.logger = logger;
 
 		this.connection = false;
 
 		this.config = config || {};
-		if(!this.config.dir) this.config.dir = "mongodb://localhost/filehost";
+		if (!this.config.dir) this.config.dir = "mongodb://localhost/filehost";
 
 		return this;
 	}
 
 	connect() {
-		return new Promise((res, rej) => {
-			this.Mongoose.connect(this.config.dir, { useNewUrlParser: true, useUnifiedTopology: true } );
+		return new Promise((res) => {
+			this.Mongoose.connect(this.config.dir, { useNewUrlParser: true, useUnifiedTopology: true });
 			this.connection = this.Mongoose.connection;
 
-			this.connection.on("error", e => this.logger.error(e.message));
+			this.connection.on("error", (e) => this.logger.error(e.message));
 			this.connection.once("open", res);
 		});
 	}
-}
+};
