@@ -6,6 +6,7 @@
   "dependencies": {
     "axios": "^0.21.1",
     "body-parser": "^1.19.0",
+    "btoa": "^1.2.1",
     "chalk": "^4.1.0",
     "cookie-parser": "^1.4.5",
     "dotenv": "^8.2.0",
@@ -13,7 +14,8 @@
     "express-handlebars": "^5.2.0",
     "express-session": "^1.17.1",
     "moment": "^2.29.1",
-    "mongoose": "^5.11.9"
+    "mongoose": "^5.11.9",
+    "querystring": "^0.2.0"
   },
   "devDependencies": {
     "eslint": "^7.16.0",
