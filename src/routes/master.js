@@ -11,7 +11,8 @@ function formatLinks(req, res, next) {
 	Object.keys(navlinks).forEach((data) => {
 		const ndata = navlinks[data];
 		if (!ndata.authOnly && !ndata.noAuthOnly) res.locals.links[data] = ndata;
-		if (req.session.auth && req.session.auth.token && ndata.authOnly) res.locals.links[data] = ndata;
+		if (req.session.auth && req.session.auth.token
+			&& ndata.authOnly) res.locals.links[data] = ndata;
 		if (!req.session.auth && ndata.noAuthOnly) res.locals.links[data] = ndata;
 	});
 
