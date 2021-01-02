@@ -1,0 +1,16 @@
+<div class="fluid-container d-flex justify-content-center align-items-center vh-100">
+	<div class="p-5 text-center bg-dark">
+		<h1 class="mb-3 text-light">Stop Right There!</h1>
+		<h4 class="mb-3 text-light">Enter your invite code.</h4>
+		<form action="/api/redeeminvite" method="get">
+			<!--<input type="hidden" name="X-Plutonus-CSRF" value="{{csrf}}" />-->
+			<div class="form-outline form-white">
+				<input type="text" name="code" id="code" class="form-control bg-light text-dark" aria-describedby="codeDesc" />
+			</div>
+			<div id="codeDesc" class="form-text">
+				All invite codes are single use.
+			</div><br/>
+			<button type="submit" class="btn btn-primary" href="/invite/redeem" role="button">Redeem</a>
+		</form>
+	</div>
+</div>

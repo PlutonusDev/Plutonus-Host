@@ -4,6 +4,6 @@ const api = require("./api");
 
 module.exports = (database) => ({
 	logger,
-	master,
+	master: master(database),
 	api: api(database),
 });

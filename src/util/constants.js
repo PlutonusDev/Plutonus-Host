@@ -4,13 +4,20 @@ module.exports = {
 	schema: {
 		User: new Schema({
 			username: String,
-			password: String,
-			id: Number,
+			id: String,
 			token: String,
+			type: String,
+			oauth2: Schema.Types.Mixed,
 		}),
 		File: new Schema({
-			owner: Number,
+			owner: Number, // User.id
 			location: String,
+			meta: Schema.Types.Mixed,
+		}),
+		Invite: new Schema({
+			creator: Number, // User.id
+			code: String,
+			redeemed: Boolean,
 		}),
 	},
 
@@ -23,6 +30,11 @@ module.exports = {
 			href: "/login",
 			page: "Login",
 			noAuthOnly: true,
+		},
+		dashboard: {
+			href: "/dashboard",
+			page: "Dashboard",
+			authOnly: true,
 		},
 		logout: {
 			href: "/logout",

@@ -5,7 +5,16 @@ module.exports = {
 		makeToken: () => new Promise((res, rej) => {
 			randomBytes(80, (err, buffer) => {
 				if (err) rej(err);
-				res(buffer.toString("base64").substr(0, 50));
+				res(buffer.toString("hex").substr(0, 50));
+			});
+		}),
+	},
+
+	auth: {
+		makeToken: () => new Promise((res, rej) => {
+			randomBytes(80, (err, buffer) => {
+				if (err) rej(err);
+				res(`PHOSTv1-${buffer.toString("hex")}`.substr(0, 50));
 			});
 		}),
 	},
