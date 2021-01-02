@@ -24,6 +24,7 @@ app.set("views", path.join(__dirname, "views"));
 
 app.enable("trust proxy");
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended:true}));
 app.use(cookie());
 app.use(session({
 	secret: process.env.SESSION_SECRET || "changeme",
@@ -32,10 +33,17 @@ app.use(session({
 }));
 app.set("x-powered-by", false);
 
-const routers = require("./routes")(db);
-app.use("*", routers.logger);
-app.use("/api", routers.api);
-app.use("/", routers.master);
+// Security
+const csrf = require("./middleware/csrf");
+app.use("*", csrf);
+
+// Routes
+db.connect().then(() => {
+	const routers = require("./routes")(db);
+	app.use("*", routers.logger);
+	app.use("/api", routers.api);
+	app.use("/", routers.master);
+});
 
 require("./util/configCheck").then(() => {
 	app.listen(process.env.PORT || 3000, () => {
