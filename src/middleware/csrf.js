@@ -8,14 +8,17 @@ module.exports = async (req, res, next) => {
 		if (req.cookies["X-Plutonus-CSRF"] && req.get("X-Plutonus-CSRF")) {
 			if (req.cookies["X-Plutonus-CSRF"] === decodeURIComponent(req.get("CSRF-TOKEN"))) return next();
 		}
+		if (req.cookies["X-Plutonus-CSRF"] && req.body["X-Plutonus-CSRF"]) {
+			if (req.cookies["X-Plutonus-CSRF"] === req.body["X-Plutonus-CSRF"]) return res.next();
+		}
 		return res.status(400).send("Browser integrity check failed. What are you doing?");
 	}
 	// Generate CSRF presence if it doesn't exist
 	if (!req.cookies["X-Plutonus-CSRF"]) {
 		res.cookie("X-Plutonus-CSRF", await csrf.makeToken(), {
-			maxAge: 172800000,
+			maxAge: 60000 * 15,
 			sameSite: "strict",
-			httpOnly: false,
+			httpOnly: true,
 		});
 	}
 	return next();
