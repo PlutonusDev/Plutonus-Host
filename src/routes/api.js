@@ -12,16 +12,11 @@ const { auth } = require("../util/security");
 const { log, error } = require("../util/logger");
 
 module.exports = (database) => {
-	let UserSchema;
-	let InviteSchema;
-	let UserDB;
-	let InviteDB;
-
-	UserSchema = mongoose.model("User", schema.User, "users");
-	InviteSchema = mongoose.model("Invite", schema.Invite, "invites");
+	const UserSchema = mongoose.model("User", schema.User, "users");
+	const InviteSchema = mongoose.model("Invite", schema.Invite, "invites");
 	log(`Database connected (@ ${chalk.blue(database.config.dir)}) and API ${chalk.blue("operational")}.`);
-	UserDB = database.connection.db.collection("users");
-	InviteDB = database.connection.db.collection("invites");
+	const UserDB = database.connection.db.collection("users");
+	const InviteDB = database.connection.db.collection("invites");
 
 	UserDB.countDocuments((e, count) => {
 		if (e) return error(e.message);
@@ -34,16 +29,19 @@ module.exports = (database) => {
 	InviteDB.countDocuments(async (e, count) => {
 		if (e) return error(e.message);
 		if (count === 0) {
-			const rootInvite = new InviteSchema({
+			new InviteSchema({
 				creator: 0,
 				code: "root",
-			}).save((e, doc) => {
-				if (e) return error(e.message);
+			}).save((e2) => {
+				if (e2) return error(e.message);
 				log(`Created invite code '${chalk.blue("root")}'. Use this to authorize your admin account.`);
-				count++;
+
+				return 0;
 			});
 		}
 		log(`Successfully loaded ${chalk.blue(count)} invites.`);
+
+		return 0;
 	});
 
 	app.get("/", (req, res) => {
@@ -53,7 +51,7 @@ module.exports = (database) => {
 
 	app.get("/redeeminvite", (req, res) => {
 		if (!req.session.auth) return res.redirect("/login");
-		InviteDB.findOne({ code: req.query.code }, async (e, invite) => {
+		return InviteDB.findOne({ code: req.query.code }, async (e, invite) => {
 			if (!invite) {
 				log(`${chalk.blue(req.ip)} attempted to redeem code '${chalk.blue(req.query.code)}' but it doesn't exist.`);
 				return res.status(401).redirect("/invite?e=1");
@@ -63,7 +61,7 @@ module.exports = (database) => {
 				return res.status(401).redirect("/invite?e=2");
 			}
 
-			await InviteDB.updateOne({ _id: invite._id }, { $set: { redeemed: true } });
+			await InviteDB.updateOne({ code: invite.code }, { $set: { redeemed: true } });
 
 			const user = new UserSchema(req.session.auth);
 			if (invite.code === "root") {
@@ -76,9 +74,8 @@ module.exports = (database) => {
 			const token = await auth.makeToken();
 			user.token = token;
 			req.session.auth.token = token;
-			console.log(user);
 			await user.save();
-			res.status(200).redirect("/dashboard?s=1");
+			return res.status(200).redirect("/dashboard?s=1");
 		});
 	});
 
@@ -122,7 +119,8 @@ module.exports = (database) => {
 						log(`${chalk.blue(req.ip)} has logged in as '${chalk.yellow(member.username)}'.`);
 						req.session.auth = {
 							id: member.id,
-							username: member.username === user.data.username ? member.username : user.data.username,
+							username: member.username === user.data.username
+								? member.username : user.data.username,
 							token: member.token,
 							type: member.type,
 							oauth2: {
@@ -135,11 +133,8 @@ module.exports = (database) => {
 
 						if (member.username !== user.data.username) {
 							const oldname = member.username;
-							member.username = user.data.username;
-							await member.save().then((e, doc) => {
-								if (e) return error(e.message);
-								log(`${chalk.blue(req.ip)} (${chalk.yellow(member.username)}) Account '${chalk.blue(oldname)}' username updated to '${chalk.blue(user.data.username)}'.`);
-							});
+							UserDB.updateOne({ id: member.id }, { $set: { username: user.data.username } });
+							log(`${chalk.blue(req.ip)} (${chalk.yellow(member.username)}) Account '${chalk.blue(oldname)}' username updated to '${chalk.blue(user.data.username)}'.`);
 						}
 
 						res.status(200).redirect("/dashboard");
