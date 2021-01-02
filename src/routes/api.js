@@ -66,10 +66,10 @@ module.exports = (database) => {
 			const user = new UserSchema(req.session.auth);
 			if (invite.code === "root") {
 				user.type = "admin";
-				log(`Account '${chalk.blue(req.session.auth.username)}' is now the main admin user.`);
+				log(`${chalk.blue(req.ip)} (${chalk.yellow(req.session.auth.username)}) Account '${chalk.blue(req.session.auth.username)}' is now the main admin user.`);
 			} else {
 				user.type = "user";
-				log(`Account '${chalk.blue(req.session.auth.username)}' redeemed the '${invite.code}' invite.`);
+				log(`${chalk.blue(req.ip)} (${chalk.yellow(req.session.auth.username)}) Account '${chalk.blue(req.session.auth.username)}' redeemed the '${invite.code}' invite.`);
 			}
 			const token = await auth.makeToken();
 			user.token = token;
@@ -116,7 +116,7 @@ module.exports = (database) => {
 
 						res.status(200).redirect("/invite");
 					} else {
-						log(`${chalk.blue(req.ip)} has logged in as '${chalk.yellow(member.username)}'.`);
+						log(`${chalk.blue(req.ip)} (${chalk.yellow(member.username)}) Logged in.`);
 						req.session.auth = {
 							id: member.id,
 							username: member.username === user.data.username

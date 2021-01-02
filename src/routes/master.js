@@ -6,22 +6,29 @@ const { navlinks } = require("../util/constants");
 
 const app = express.Router();
 
-function formatLinks(req, res, next) {
-	res.locals.links = {};
-	Object.keys(navlinks).forEach((data) => {
-		const ndata = navlinks[data];
-		if (!ndata.authOnly && !ndata.noAuthOnly) res.locals.links[data] = ndata;
-		if (req.session.auth && req.session.auth.token
-			&& ndata.authOnly) res.locals.links[data] = ndata;
-		if (!req.session.auth && ndata.noAuthOnly) res.locals.links[data] = ndata;
+function formatLinks(req) {
+	return new Promise(async res => {
+		let links = {};
+		await Object.keys(navlinks).forEach((data) => {
+			const ndata = navlinks[data];
+			if (!ndata.authOnly && !ndata.noAuthOnly) links[data] = ndata;
+			if (req.session.auth && req.session.auth.token
+				&& ndata.authOnly) links[data] = ndata;
+			if (!req.session.auth && ndata.noAuthOnly) links[data] = ndata;
+		});
+		await Object.keys(links).forEach((data) => {
+			links[data].active = false;
+		});
+		res(links);
 	});
-
-	next();
 }
 
 module.exports = (database) => {
 	app.use("/assets", express.static(path.join(__dirname, "..", "assets")));
-	app.use("*", formatLinks);
+	app.use("*", async (req, res, next) => {
+		res.locals.links = await formatLinks(req);
+		next();
+	});
 
 	app.get("/", (req, res) => {
 		res.locals.links.home.active = "active";
@@ -29,7 +36,6 @@ module.exports = (database) => {
 	});
 
 	app.get("/login", (req, res) => {
-		res.locals.links.login.active = "active";
 		return res.status(200).redirect(`https:/discord.com/api/oauth2/authorize?scope=identify%20guilds.join&response_type=code&client_id=${process.env.DISCORD_ID}&redirect_uri=${encodeURIComponent(process.env.DISCORD_REDIRECT)}&prompt=none`);
 		// res.render("login", { navlinks: res.locals.links });
 	});
@@ -43,7 +49,7 @@ module.exports = (database) => {
 	// Authorized-Only Routes
 	app.use("*", auth(database).validate);
 	app.get("/dashboard", (req, res) => {
-		res.locals.links.dashboard.active = "action";
+		res.locals.links.dashboard.active = "active";
 		return res.render("dashboard", { navlinks: res.locals.links, user: req.session.auth });
 	});
 

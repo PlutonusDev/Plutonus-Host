@@ -1,17 +1,17 @@
-<nav class="navbar navbar-expand-md navbar-dark bg-dark sticky-top">
-	<div class="container-fluid">
-		<a class="navbar-brand text-primary font-weight-bold" href="/">
-			Plutonus! Host
+<nav class="navbar navbar-expand-md navbar-dark bg-primary">
+	<div class="container">
+		<a class="navbar-brand" href="/">
+			<strong>Plutonus! Host</strong>
 		</a>
 		<button class="navbar-toggler" type="button" data-mdb-toggle="collapse" data-mdb-target="#navbar">
 			<i class="fas fa-bars"></i>
 		</button>
 
 		<div class="collapse navbar-collapse" id="navbar">
-			<ul class="navbar-nav mr-auto mb-2 mb-lg-0">
+			<ul class="navbar-nav mb-2 mb-md-0 ml-auto float-right">
 				{{#each navlinks}}
 					<li class="nav-item">
-						<a class="nav-link {{this.active}}" href="{{this.href}}">{{this.page}}</a>
+						<a class="nav-link ripple w-100 w-md-auto {{this.active}}" href="{{this.href}}"><i class="fas fa-fw fa-{{this.icon}}"></i>&nbsp;&nbsp;{{this.page}}{{#if this.active}}<span class="sr-only">(current)</span>{{/if}}</a>
 					</li>
 				{{/each}}
 			</ul>
