@@ -25,21 +25,29 @@ module.exports = {
 		home: {
 			href: "/",
 			page: "Home",
+			icon: "home",
+			active: false,
 		},
 		login: {
 			href: "/login",
 			page: "Login",
+			icon: "user",
 			noAuthOnly: true,
+			active: false,
 		},
 		dashboard: {
 			href: "/dashboard",
 			page: "Dashboard",
+			icon: "images",
 			authOnly: true,
+			active: false,
 		},
 		logout: {
 			href: "/logout",
 			page: "Logout",
+			icon: "sign-out-alt",
 			authOnly: true,
+			active: false,
 		},
 	},
 };
