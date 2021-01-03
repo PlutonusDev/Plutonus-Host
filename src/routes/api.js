@@ -1,5 +1,6 @@
 require("dotenv").config();
 const { get, post } = require("axios");
+const { randomBytes } = require("crypto");
 const btoa = require("btoa");
 const querystring = require("querystring");
 const chalk = require("chalk");
@@ -10,6 +11,10 @@ const app = express.Router();
 const { schema } = require("../util/constants");
 const { auth } = require("../util/security");
 const { log, error } = require("../util/logger");
+
+function generateInvite() {
+	return `PH-${randomBytes(3).toString("hex").toUpperCase()}`;
+}
 
 module.exports = (database) => {
 	const UserSchema = mongoose.model("User", schema.User, "users");
@@ -49,6 +54,30 @@ module.exports = (database) => {
 		res.send(user);
 	});
 
+	app.get("/logout", (req, res) => {
+		req.session.auth = undefined;
+		res.redirect("/");
+	});
+
+	app.get("/generateinvite", (req, res) => {
+		//return res.send({ err: "Test" });
+		UserDB.findOne({ token: req.query.token }, async (e, user) => {
+			if(!user) {
+				return res.send({ err: "You're not logged in." });
+			}
+
+			const invite = new InviteSchema({
+				creator: user.id,
+				code: generateInvite()
+			});
+
+			invite.save();
+
+			log(`${chalk.blue(req.ip)} (${chalk.yellow(user.username)}) created an invite code: '${chalk.yellow(invite.code)}'.`);
+			return res.send({ err: false, code: invite.code });
+		});
+	});
+
 	app.get("/redeeminvite", (req, res) => {
 		if (!req.session.auth) return res.redirect("/login");
 		return InviteDB.findOne({ code: req.query.code }, async (e, invite) => {
@@ -68,7 +97,7 @@ module.exports = (database) => {
 				user.type = "admin";
 				log(`${chalk.blue(req.ip)} (${chalk.yellow(req.session.auth.username)}) Account '${chalk.blue(req.session.auth.username)}' is now the main admin user.`);
 			} else {
-				user.type = "user";
+				user.type = "beta";
 				log(`${chalk.blue(req.ip)} (${chalk.yellow(req.session.auth.username)}) Account '${chalk.blue(req.session.auth.username)}' redeemed the '${invite.code}' invite.`);
 			}
 			const token = await auth.makeToken();
@@ -77,6 +106,10 @@ module.exports = (database) => {
 			await user.save();
 			return res.status(200).redirect("/dashboard?s=1");
 		});
+	});
+
+	app.get("/reportabuse", (req, res) => {
+		res.status(200).redirect("/"); // Will update soon.
 	});
 
 	app.get("/oauth2/discord", async (req, res) => {
@@ -123,6 +156,7 @@ module.exports = (database) => {
 								? member.username : user.data.username,
 							token: member.token,
 							type: member.type,
+							admin: member.type==="admin" ? true : undefined,
 							oauth2: {
 								discord: {
 									access: member.oauth2.discord.access,
