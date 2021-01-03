@@ -1,0 +1,47 @@
+<div class="container-fluid mt-5">
+	<div class="row content">
+		<div class="col-sm-2"></div>
+		<div class="col-sm-8">
+			<h1 class="heading"><i class="fas fa-fw fa-gavel"></i> DMCA / Abuse</h1>
+			<p class="text-muted">
+				Report <a href="/terms"><i class="fas fa-fw fa-book"></i> Terms of Service</a>
+				or copyright violating content.
+			</p>
+			<div class="row">
+				<div class="col-sm-3"></div>
+				<div class="col-sm-6">
+					<form class="mt-5 form" action="/api/reportabuse" method="get">
+						<div class="alert alert-danger">
+							<h3 class="heading">Sorry!</h3>
+							<p>This form is currently offline. Requests submitted through it will not be received.</p>
+						</div>
+						{{#if user.username}}
+							<label class="form-label text-light" for="username">Username</label>
+							<input class="form-control form-control-lg" type="text" id="username" value="{{user.username}}" readonly />
+						{{else}}
+							<label class="form-label text-light" for="username">Your Name</label>
+							<input class="form-control form-control-lg" type="text" id="username" placeholder="Your Name" />
+						{{/if}}
+
+						<label class="form-label text-light mt-5" for="type">Type of Violation</label>
+						<select class="form-control form-control-lg">
+							<option>ToS Violation - Inappropriate Content</option>
+							<option>ToS Violation - Illegal Content</option>
+							<option>Copyright Infringement</option>
+						</select>
+
+						<label class="form-label text-light mt-5" for="links">Links to Offending Material</label>
+						<textarea class="form-control form-control-lg" id="link" rows="4" placeholder="https://"></textarea>
+
+						<label class="form-label text-light mt-5" for="info">Information</label>
+						<textarea class="form-control form-control-lg" id="info" rows="4" placeholder="These images contain my copyrighted work. Proof is at https://example.com/me/artwork.png"></textarea>
+
+						<button type="submit" class="mt-5 mb-5 btn btn-danger">Submit Report</button>
+					</form>
+				</div>
+				<div class="col-sm-3"></div>
+			</div>
+		</div>
+		<div class="col-sm-2"></div>
+	</div>
+</div>

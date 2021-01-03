@@ -7,11 +7,11 @@
 			<i class="fas fa-bars"></i>
 		</button>
 
-		<div class="collapse navbar-collapse" id="navbar">
-			<ul class="navbar-nav mb-2 mb-md-0 ml-auto float-right">
+		<div class="collapse navbar-collapse justify-content-end" id="navbar">
+			<ul class="navbar-nav mb-2 mb-lg-0">
 				{{#each navlinks}}
 					<li class="nav-item">
-						<a class="nav-link ripple w-100 w-md-auto {{this.active}}" href="{{this.href}}"><i class="fas fa-fw fa-{{this.icon}}"></i>&nbsp;&nbsp;{{this.page}}{{#if this.active}}<span class="sr-only">(current)</span>{{/if}}</a>
+						<a class="nav-link ripple w-100 w-md-auto px-2 {{this.active}} {{this.muted}}" href="{{this.href}}"><i class="fas fa-fw fa-{{this.icon}}"></i>&nbsp;&nbsp;{{this.page}}{{#if this.active}}<span class="sr-only">(current)</span>{{/if}}</a>
 					</li>
 				{{/each}}
 			</ul>

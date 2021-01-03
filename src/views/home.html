@@ -1,8 +1,17 @@
-<div class="fluid-container d-flex justify-content-center align-items-center vh-100">
-	<div class="p-5 text-center bg-dark">
-		<h1 class="mb-3 text-light">Plutonus! Host</h1>
-		<h4 class="mb-3 text-light">Invite-Only image host and url shortener.</h4>
-		<a class="btn btn-primary" href="/login" role="button">Login with Discord</a>
+<div class="container-fluid mt-5">
+	<div class="row content">
+		<div class="col-sm-2"></div>
+		<div class="col-sm-8 text-center">
+			<h1><i class="fas fa-fw fa-bomb"></i></h1>
+			<h1 class="heading">Plutonus! Host</h1>
+			<h3 class="subheading">An exclusive, deluxe, all-features-included invite-only file host service.</h3>
+			{{#if user.username}}
+				<p class="mt-5">Logged in as {{user.username}}</p>
+				<a href="/logut" class="mt-2">Logout</a>
+			{{else}}
+				<a href="/login" class="btn btn-primary btn-lg mt-2">Sign in With Discord</a>
+			{{/if}}
+		</div>
+		<div class="col-sm-2"></div>
 	</div>
 </div>
-
