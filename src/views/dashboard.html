@@ -1,1 +1,111 @@
-<p>dashboard</p>
+<div class="container-fluid h-100">
+	<div class="row content h-100">
+		<div class="col-lg-2 bg-primary text-light">
+			<nav id="sidebar" class="mx-2">
+				<div class="sidebar-header mt-5 text-center">
+					<h3>Dashboard</h3>
+				</div>
+				<ul class="list-unstyled components">
+					<div class="container text-center">
+						<p class="h5 mb-0">Welcome, {{user.username}}!</p>
+						<p class="text-warning">Account Type: {{#capitalise user.type}}{{/capitalise}}</p>
+					</div>
+
+					{{#if user.admin}}
+						<div class="container">
+							<a class="nav-link btn btn-dark text-light" onclick="generateInvite('{{user.token}}')">Generate Invite Code</a>
+							<div id="inviteCon" class="alert alert-success mt-3 d-none">
+								<p id="invite" class="mb-0 text-center"></p>
+							</div>
+						</div>
+					{{/if}}
+				</ul>
+			</nav>
+		</div>
+		<div class="col-lg-1"></div>
+		<div class="col-lg-8 mt-3">
+			<ul class="nav nav-tabs nav-fill mb-3 mx-2 mx-md-5" id="ex1" role="tablist">
+				<li class="nav-item">
+					<a class="nav-link active text-light bg-dark"
+					id="library-tab"
+					data-toggle="tab"
+					href="#library"
+					role="tab"
+					aria-controls="library"
+					aria-selected="true">
+						Library
+					</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link text-light bg-dark"
+					id="account-tab"
+					data-toggle="tab"
+					href="#account"
+					role="tab"
+					aria-controls="account"
+					aria-selected="false">
+						Account
+					</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link text-light bg-dark"
+					id="config-tab"
+					data-toggle="tab"
+					href="#config"
+					role="tab"
+					aria-controls="config"
+					aria-selected="false">
+						Config Generator
+					</a>
+				</li>
+			</ul>
+
+			<div class="tab-content" id="tablist">
+				<div class="tab-pane fade show active mt-5" id="library" role="tabpanel" aria-labelledby="library-tab">
+					<h3 class="heading text-center"><i class="fas fa-fw fa-images"></i> Library</h3>
+					<div class="gallery mt-5">
+						{{#if images}}
+							
+						{{else}}
+							<div class="alert alert-warning">
+								<h5 class="heading"><i class="fas fa-fw fa-folder-open"></i> Huh. It's a little empty here...</h5>
+								<p>Why don't you generate a config and start uploading?</p>
+							</div>
+						{{/if}}
+					</div>
+				</div>
+
+				<div class="tab-pane fade mt-5" id="account" role="tabpanel" aria-labelledby="account-tab">
+					<h3 class="heading text-center"><i class="fas fa-fw fa-user"></i> Account Settings</h3>
+				</div>
+
+				<div class="tab-pane fade mt-5" id="config" role="tabpanel" aria-labelledby="config-tab">
+					<h3 class="heading text-center"><i class="fas fa-fw fa-cogs"></i> Config Generator</h3>
+				</div>
+			</div>
+		</div>
+		<div class="col-lg-1"></div>
+	</div>
+</div>
+
+<script>
+function generateInvite(token) {
+	$.ajax({
+		url: "/api/generateInvite",
+		data: { token },
+	}).done(function(resp) {
+		if(resp.err) {
+			//$("#inviteCon").removeClass("d-none");
+			Swal.fire(resp.err);
+		} else {
+			$("#inviteCon").removeClass("d-none");
+			$("#invite").html("<i class='fas fa-fw fa-handshake'></i> "+resp.code);
+			toast.fire({
+				icon: success,
+				title: "Done!",
+				message: "Generating invite code successfully."
+			});
+		}
+	});
+}
+</script>

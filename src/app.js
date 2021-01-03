@@ -18,6 +18,10 @@ const db = new database({
 app.engine("html", exphbs({
 	extname: ".html",
 	defaultLayout: "main",
+
+	helpers: {
+		capitalise: str => str[0].toUpperCase() + str.slice(1)
+	},
 }));
 app.set("view engine", "html");
 app.set("views", path.join(__dirname, "views"));

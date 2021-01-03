@@ -1,6 +1,6 @@
-<div class="fluid-container d-flex justify-content-center align-items-center vh-100">
-	<div class="p-5 text-center bg-dark">
-		<h1 class="mb-3 text-light"><i class="fas fa-handshake-slash"></i></h1>
+<div class="fluid-container mt-5">
+	<div class="row content text-center bg-dark">
+		<h1 class="mb-3 text-light"><i class="fas fa-handshake-slash"></i> {{user.username}}</h1>
 		<h4 class="mb-3 text-light">Who sent you?</h4>
 		<form action="/api/redeeminvite" method="get">
 			<!--<input type="hidden" name="X-Plutonus-CSRF" value="{{csrf}}" />-->
