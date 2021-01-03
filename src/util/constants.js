@@ -10,12 +10,12 @@ module.exports = {
 			oauth2: Schema.Types.Mixed,
 		}),
 		File: new Schema({
-			owner: Number, // User.id
+			owner: String, // User.id
 			location: String,
 			meta: Schema.Types.Mixed,
 		}),
 		Invite: new Schema({
-			creator: Number, // User.id
+			creator: String, // User.id
 			code: String,
 			redeemed: Boolean,
 		}),
@@ -28,18 +28,39 @@ module.exports = {
 			icon: "home",
 			active: false,
 		},
-		login: {
-			href: "/login",
-			page: "Login",
-			icon: "user",
-			noAuthOnly: true,
-			active: false,
-		},
 		dashboard: {
 			href: "/dashboard",
 			page: "Dashboard",
 			icon: "images",
 			authOnly: true,
+			active: false,
+		},
+		terms: {
+			href: "/terms",
+			page: "Terms",
+			icon: "book",
+			active: false,
+			muted: "text-muted",
+		},
+		privacy: {
+			href: "/privacy",
+			page: "Privacy",
+			icon: "eye",
+			active: false,
+			muted: "text-muted",
+		},
+		abuse: {
+			href: "/abuse",
+			page: "Abuse",
+			icon: "gavel",
+			active: false,
+			muted: "text-muted",
+		},
+		login: {
+			href: "/login",
+			page: "Login",
+			icon: "user",
+			noAuthOnly: true,
 			active: false,
 		},
 		logout: {
